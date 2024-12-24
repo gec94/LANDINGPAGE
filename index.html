@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAPTCHA e Landing Page</title>
+  <style>
+    /* Stile generale */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    /* Sezione CAPTCHA */
+    .captcha-section {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f9f9f9;
+    }
+
+    .captcha-section.active {
+      display: flex;
+    }
+
+    /* Stile per la griglia delle immagini */
+    .captcha-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px); /* 3 colonne */
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .captcha-grid img {
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      border: 2px solid transparent; /* Bordo iniziale */
+      border-radius: 5px;
+      transition: border-color 0.3s;
+    }
+
+    .captcha-grid img.selected {
+      border: 2px solid blue; /* Bordo quando selezionata */
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #result {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    /* Landing page inizialmente nascosta */
+    #landing-page {
+      display: none;
+    }
+
+    /* Sezione della landing page */
+    .hero {
+      background: url('img/hero.jpg') no-repeat center center/cover;
+      height: 100vh;
+      color: black;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      max-width: 600px;
+      margin-bottom: 30px;
+    }
+
+    .hero button {
+      padding: 15px 30px;
+      font-size: 1rem;
+      color: white;
+      background-color: #ff5722;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .hero button:hover {
+      background-color: #e64a19;
+    }
+
+    .content {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .gallery {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .gallery img {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 10px 20px;
+    }
+
+    footer p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- CAPTCHA 1 -->
+  <div id="captcha1" class="captcha-section active">
+    <h1>Dobbiamo verificare che tu non sia un robot.</h1>
+    <p>Seleziona le immagini con il Colosseo.</p>
+    <div class="captcha-grid">
+      <img src="img/colosseo2.jpg" alt="Colosseo" data-answer="true">
+      <img src="img/monti.jpg" alt="Monti" data-answer="false">
+      <img src="img/trevi.jpg" alt="Trevi" data-answer="false">
+      <img src="img/colosseo1.jpg" alt="Colosseo" data-answer="true">
+      <img src="img/pantheon.jpg" alt="Pantheon" data-answer="false">
+      <img src="img/colosseo3.jpg" alt="Colosseo" data-answer="true">
+    </div>
+    <button onclick="checkCaptcha(1)">Verifica</button>
+    <p id="result1"></p>
+  </div>
+
+  <!-- CAPTCHA 2 -->
+  <div id="captcha2" class="captcha-section">
+    <h1>Purtroppo, non ci hai convinto</h1>
+    <p>Seleziona le immagini con le carote</p>
+    <div class="captcha-grid">
+    <img src="img/kiwi.jpg" alt="Kiwi" data-answer="false">
+    <img src="img/mele.jpg" alt="Mele" data-answer="false">
+    <img src="img/carote1.jpg" alt="Carote" data-answer="true">
+    <img src="img/litchi.jpg" alt="Litchi" data-answer="false">
+    <img src="img/banane.jpg" alt="Banane" data-answer="false">
+    <img src="img/carote2.jpg" alt="Carote" data-answer="true">
+    </div>
+    <button onclick="checkCaptcha(2)">Verifica</button>
+    <p id="result2"></p>
+  </div>
+
+  <!-- CAPTCHA 3 -->
+  <div id="captcha3" class="captcha-section">
+    <h1>Un ultimo test...</h1>
+    <p>Seleziona le immagini con le palline da tennis</p>
+    <div class="captcha-grid">
+    <img src="img/basket.jpg" alt="Basket" data-answer="false">
+    <img src="img/baseball.jpg" alt="Baseball" data-answer="false">
+    <img src="img/pallina2.jpg" alt="Tennis" data-answer="true">
+    <img src="img/pallina1.jpg" alt="Tennis" data-answer="true">
+    <img src="img/calcio.jpg" alt="Calcio" data-answer="false">
+    <img src="img/bocce.jpg" alt="Bocce" data-answer="false">
+    </div>
+    <button onclick="checkCaptcha(3)">Verifica</button>
+    <p id="result3"></p>
+  </div>
+
+  <!-- Landing Page -->
+  <div id="landing-page">
+    <div class="hero">
+      <h1>Evviva. Ce l'hai fatta.</h1>
+      <button onclick="window.location.href='https://sites.google.com/view/complimenti-hai-vinto/home'">Clicca qui</button>
+    </div>
+    <div id="info" class="content">
+      <h2>Perché sceglierci?</h2>
+      <p>
+        Forniamo soluzioni innovative per soddisfare le tue esigenze. La nostra esperienza ci consente di creare prodotti di alta qualità che ti aiutano a raggiungere i tuoi obiettivi.
+      </p>
+    </div>
+    <div class="gallery">
+      <img src="img/photo1.jpg" alt="Foto 1">
+      <img src="img/photo2.jpg" alt="Foto 2">
+      <img src="img/photo3.jpg" alt="Foto 3">
+    </div>
+    <footer>
+      <p>&copy; 2024 La Tua Azienda. Tutti i diritti riservati.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Funzione per verificare ciascun CAPTCHA
+    function checkCaptcha(captchaNumber) {
+      const sectionId = `captcha${captchaNumber}`;
+      const resultId = `result${captchaNumber}`;
+      const captchaSection = document.getElementById(sectionId);
+      const resultElement = document.getElementById(resultId);
+      const images = captchaSection.querySelectorAll('.captcha-grid img');
+
+      let correct = true;
+
+      images.forEach(img => {
+        const isSelected = img.classList.contains('selected');
+        const isCorrect = img.dataset.answer === "true";
+        if (isSelected !== isCorrect) {
+          correct = false;
+        }
+      });
+
+      if (correct) {
+        resultElement.textContent = `CAPTCHA ${captchaNumber} superato! 🎉`;
+        resultElement.style.color = "green";
+
+        captchaSection.classList.remove('active');
+        if (captchaNumber < 3) {
+          document.getElementById(`captcha${captchaNumber + 1}`).classList.add('active');
+        } else {
+          document.getElementById('landing-page').style.display = 'block';
+        }
+      } else {
+        resultElement.textContent = `CAPTCHA ${captchaNumber} fallito. Riprova! ❌`;
+        resultElement.style.color = "red";
+      }
+    }
+
+    // Aggiungi eventi click alle immagini dei CAPTCHA
+    document.querySelectorAll('.captcha-grid img').forEach(img => {
+      img.addEventListener('click', () => {
+        img.classList.toggle('selected');
+      });
+    });
+  </script>
+</body>
+</html>
